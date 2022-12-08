@@ -63,6 +63,26 @@ class ProfessoresControllers {
       res.json(error);
     }
   }
+
+  static async deleteProfessor(req, res) {
+    try {
+      const { turmaId } = req.body;
+
+      const turma = await Turmas.findByPk(parseInt(turmaId));
+
+      if (!turma) {
+        res.json("Professor não existe");
+        return;
+      }
+
+      await Turmas.destroy({
+        where: { id: parseInt(turmaId) },
+      });
+      res.json("Turma deletada");
+    } catch (error) {
+      res.json(error);
+    }
+  }
 }
 
 module.exports = ProfessoresControllers;

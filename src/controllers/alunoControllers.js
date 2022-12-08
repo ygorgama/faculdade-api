@@ -10,22 +10,25 @@ class AlunoController {
       const turma = await Turmas.findOne({ where: { sala: 1 } });
 
       if (!turma) {
-        throw new Error("Primeiro modulo não cadastrado");
+        res.json("Primeiro modulo não cadastrado");
+        return;
       }
 
       if (nome === "" || nome === undefined) {
-        throw new Error("Nome invalido");
+        res.json("Nome invalido");
+        return;
       }
 
       if (!cpf.isValid(receivedCpf)) {
-        throw new Error("Parametros de sala inválidos");
+        res.json("Parametros de sala inválidos");
+        return;
       }
 
       const aluno = await Alunos.create({
         nome: nome,
         cpf: cpf.format(receivedCpf),
         turma_id: turma.dataValues.id,
-        nota_final: 0,
+        nota_final: Math.floor(Math.random() * (10 - 1) + 1),
       });
 
       res.json(aluno);
@@ -54,10 +57,12 @@ class AlunoController {
       const aluno = await Alunos.findByPk(aluno_id);
 
       if (Number(aluno.dataValues.nota_final) < 6) {
-        throw new Error("Nota do aluno  menor do que 6");
+        res.json("Nota do aluno  menor do que 6");
+        return;
       }
       if (!turma) {
-        throw new Error("Sala não existe");
+        res.json("Sala não existe");
+        return;
       }
 
       await Alunos.update(

@@ -67,6 +67,26 @@ class TurmaController {
       res.json(error);
     }
   }
+
+  static async deleteTurma(req, res) {
+    try {
+      const { turmaId } = req.body;
+
+      const turma = await Turmas.findByPk(parseInt(turmaId));
+
+      if (!turma) {
+        res.json("Turma não existe");
+        return;
+      }
+
+      await Turmas.destroy({
+        where: { id: parseInt(turmaId) },
+      });
+      res.json("Turma deletada");
+    } catch (error) {
+      res.json(error);
+    }
+  }
 }
 
 module.exports = TurmaController;
