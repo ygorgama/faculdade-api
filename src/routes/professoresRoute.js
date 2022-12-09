@@ -17,4 +17,9 @@ const updateOne = route.put(
   ProfessoresControllers.updateTitulo
 );
 
+const deleteOne = route.delete(
+  "/professor/delete/:professor_id",
+  ProfessoresControllers.deleteProfessor
+);
+
 module.exports = route;

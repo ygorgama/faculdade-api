@@ -31,7 +31,7 @@ class AlunoController {
         nota_final: Math.floor(Math.random() * (10 - 1) + 1),
       });
 
-      res.json(aluno);
+      res.json("Aluno criado com sucesso");
     } catch (error) {
       res.json(error);
     }
@@ -70,7 +70,7 @@ class AlunoController {
         { where: { id: aluno_id } }
       );
 
-      res.json("Updated");
+      res.json("Sala atualizada com sucesso");
     } catch (error) {
       res.json(error);
     }
@@ -84,7 +84,7 @@ class AlunoController {
         where: { id: parseInt(aluno_id) },
       });
 
-      res.json(aluno);
+      res.json("Aluno deletado com sucesso");
     } catch (error) {
       res.json(error);
     }
@@ -102,7 +102,12 @@ class AlunoController {
       }
 
       if (typeof Number(notaFinal) !== "number") {
-        throw new Error("Parametro de nota inserido inválido");
+        res.json("Parametro de nota inserido inválido");
+        return;
+      }
+
+      if (Number(notaFinal) <= 0) {
+        res.json("Nota final não pode ser menor ou igual a zero");
       }
 
       await Alunos.update(
@@ -110,7 +115,7 @@ class AlunoController {
         { where: { id: aluno_id } }
       );
 
-      res.json("Updated");
+      res.json("Nota atualizada com sucesso");
     } catch (error) {
       res.json(error);
     }

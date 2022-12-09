@@ -7,23 +7,26 @@ class TurmaController {
       const { sala, disciplina } = req.body;
 
       if (disciplina === "" || disciplina === undefined) {
-        throw new Error("Parametros de disciplinas inválidos");
+        res.json("Parametros de disciplinas inválidos");
+        return;
       }
 
       if (!parseInt(sala)) {
-        throw new Error("Parametros de sala inválidos");
+        res.json("Parametro de sala tem quem ser maior que zero");
+        return;
       }
 
       if (parseInt(sala) <= 0) {
-        throw new Error("Parametros de sala inválidos");
+        res.json("Parametros de sala inválidos");
+        return;
       }
 
-      const createdTurma = await Turmas.create({
+      await Turmas.create({
         sala: parseInt(sala),
         disciplina,
       });
 
-      res.json(createdTurma);
+      res.json("Turma criada");
     } catch (error) {
       res.json(error);
     }
@@ -82,7 +85,7 @@ class TurmaController {
       await Turmas.destroy({
         where: { id: parseInt(turmaId) },
       });
-      res.json("Turma deletada");
+      res.json(turmaId);
     } catch (error) {
       res.json(error);
     }

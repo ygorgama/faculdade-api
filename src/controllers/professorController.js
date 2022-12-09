@@ -8,30 +8,36 @@ class ProfessoresControllers {
       const { nome, receivedCpf, titulo, turmaId } = req.body;
 
       if (nome === "" || nome === undefined) {
-        throw new Error("Nome invalido");
+        res.json("Nome invalido");
       }
       if (titulo === "" || titulo === undefined) {
-        throw new Error("Titulaçã inválida");
+        res.json("Titulaçã inválida");
+        return;
       }
 
       if (!cpf.isValid(receivedCpf)) {
         res.json("Parametros de sala inválidos");
+        return;
       }
 
-      const turma = await Turmas.findByPk(turmaId);
+      const turma = await Turmas.findByPk(parent(turmaId));
 
       if (!turma) {
-        throw new Error("Turma não encontrada");
+        res.json(
+          `Você tem que selecionar uma disciplina, 
+          ou cadastrar uma turma caso não tenha cadastrado`
+        );
+        return;
       }
 
-      const professor = await Professores.create({
+      await Professores.create({
         nome: nome,
         titulo: titulo,
         cpf: cpf.format(receivedCpf),
-        turma_id: turmaId,
+        turma_id: parseInt(turmaId),
       });
 
-      res.json(professor);
+      res.json("Professor criado com sucesso");
     } catch (error) {
       res.json(error);
     }
@@ -66,19 +72,13 @@ class ProfessoresControllers {
 
   static async deleteProfessor(req, res) {
     try {
-      const { turmaId } = req.body;
+      const { professor_id } = req.params;
 
-      const turma = await Turmas.findByPk(parseInt(turmaId));
-
-      if (!turma) {
-        res.json("Professor não existe");
-        return;
-      }
-
-      await Turmas.destroy({
-        where: { id: parseInt(turmaId) },
+      const aluno = await Professores.destroy({
+        where: { id: parseInt(professor_id) },
       });
-      res.json("Turma deletada");
+
+      res.json(aluno);
     } catch (error) {
       res.json(error);
     }
