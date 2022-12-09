@@ -7,6 +7,7 @@
 * NPM
 * Postgresql
 * Sequelize ORM
+
 **Como Usar:**
 * Digite no terminal, no cominho do projeto, o comando **npm install** para baixar as dependências da aplicação.
 * Depois va na pasta config, em database.js, e veja se a porta do Postgresql no projeto é a mesma da que está na sua máquina, faça o mesmo para o usuário.
